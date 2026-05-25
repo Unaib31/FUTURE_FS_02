@@ -1,0 +1,74 @@
+/* Premium HSL Design System Tokens */
+:root {
+  /* Obsidian Dark Theme (Default) */
+  --bg-primary: 240 10% 3.9%;      /* Pitch Charcoal */
+  --bg-secondary: 240 10% 5.9%;    /* Elevate Charcoal */
+  --bg-tertiary: 240 10% 8.5%;     /* Panel Slate */
+  --bg-card: 240 10% 6.5%;         /* Card Obsidian */
+  --border-color: 240 5.9% 15%;    /* Thin Steel Border */
+  --border-hover: 240 5.9% 25%;    
+  
+  /* Text HSL */
+  --text-primary: 0 0% 98%;        /* Pure Ice White */
+  --text-secondary: 240 5% 64.9%;  /* Silver Muted */
+  --text-muted: 240 3.8% 46.1%;    /* Steel Charcoal */
+  --text-inverse: 240 10% 3.9%;
+  
+  /* Accents & Brand Glows */
+  --accent-primary: 217.2 91.2% 59.8%;  /* Neon Electric Royal Blue */
+  --accent-secondary: 250 89% 65%;      /* Cyber Violet */
+  --accent-glow: hsla(217.2, 91.2%, 59.8%, 0.15);
+  
+  /* Pipeline Statuses Soft-Glow Palettes (Tailored HSL) */
+  --status-new: 195 90% 50%;             /* Ice Cyan */
+  --status-new-bg: hsla(195, 90%, 50%, 0.1);
+  --status-contacted: 270 90% 65%;       /* Electric Purple */
+  --status-contacted-bg: hsla(270, 90%, 65%, 0.1);
+  --status-qualified: 32 95% 55%;        /* Warm Amber Orange */
+  --status-qualified-bg: hsla(32, 95%, 55%, 0.1);
+  --status-proposal: 320 85% 60%;        /* Vibrant Rose Magenta */
+  --status-proposal-bg: hsla(320, 85%, 60%, 0.1);
+  --status-won: 142 70% 45%;             /* Emerald Mint Green */
+  --status-won-bg: hsla(142, 70%, 45%, 0.1);
+  --status-lost: 350 80% 55%;            /* Neon Rose Red */
+  --status-lost-bg: hsla(350, 80%, 55%, 0.1);
+
+  /* Constants & Layouts */
+  --sidebar-width: 260px;
+  --header-height: 70px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+  
+  /* Animations & Transitions */
+  --transition-fast: 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-bounce: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --glow-shadow: 0 0 20px 0 hsla(217.2, 91.2%, 59.8%, 0.12);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --glass-backdrop: blur(12px);
+}
+
+[data-theme="light"] {
+  /* Premium Slate Light Theme */
+  --bg-primary: 210 20% 98%;       /* Cool Slate Off-white */
+  --bg-secondary: 0 0% 100%;       /* Pure White Elevation */
+  --bg-tertiary: 210 20% 94%;      /* Light Inner Panels */
+  --bg-card: 0 0% 100%;            /* White Card */
+  --border-color: 214.3 31.8% 91.4%; /* Soft Gray Border */
+  --border-hover: 214.3 31.8% 80%;
+  
+  /* Text HSL */
+  --text-primary: 222.2 47.4% 11.2%; /* Deep Ink Navy */
+  --text-secondary: 215.4 16.3% 46.9%;/* Medium Steel Gray */
+  --text-muted: 215 16% 65%;        /* Soft Muted Gray */
+  --text-inverse: 0 0% 98%;
+  
+  /* Accents */
+  --accent-primary: 221.2 83.2% 53.3%; /* Classic Executive Royal Blue */
+  --accent-secondary: 262.1 83.3% 57.8%;
+  --accent-glow: hsla(221.2, 83.2%, 53.3%, 0.08);
+  
+  --glass-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.04);
+}

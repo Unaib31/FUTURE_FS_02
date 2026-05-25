@@ -1,0 +1,16 @@
+{
+  "name": "crm-root",
+  "version": "1.0.0",
+  "description": "Simple CRM to manage client leads generated from website contact forms",
+  "scripts": {
+    "install:backend": "npm --prefix backend install",
+    "install:frontend": "npm --prefix frontend install",
+    "install-all": "npm install && npm run install:backend && npm run install:frontend",
+    "backend": "npm --prefix backend run dev",
+    "frontend": "npm --prefix frontend run dev",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

@@ -1,0 +1,346 @@
+/* Dashboard Metrics Hub Layout */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+/* Premium KPI Card Styling */
+.kpi-card {
+  position: relative;
+  padding: 24px;
+  overflow: hidden;
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, hsl(var(--accent-primary)), hsl(var(--accent-secondary)));
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.kpi-card:hover::before {
+  opacity: 1;
+}
+
+.kpi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.kpi-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: hsl(var(--text-secondary));
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: 'Outfit', sans-serif;
+}
+
+.kpi-icon-wrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background-color: hsl(var(--bg-tertiary));
+  border: 1px solid hsl(var(--border-color));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: hsl(var(--accent-primary));
+  transition: all var(--transition-fast);
+}
+
+.kpi-card:hover .kpi-icon-wrapper {
+  background-color: hsla(var(--accent-primary) / 0.1);
+  border-color: hsla(var(--accent-primary) / 0.2);
+  transform: scale(1.05);
+}
+
+.kpi-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: hsl(var(--text-primary));
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.kpi-footer {
+  font-size: 0.8rem;
+  color: hsl(var(--text-secondary));
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.kpi-trend-positive {
+  color: hsl(var(--status-won));
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Secondary Dashboard Grid */
+.dashboard-details-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dashboard-panel {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panel-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: hsl(var(--text-primary));
+}
+
+.panel-subtitle {
+  font-size: 0.8rem;
+  color: hsl(var(--text-secondary));
+}
+
+/* Conversion Radial Chart Widget */
+.conversion-widget {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+}
+
+.radial-container {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin: 16px 0;
+}
+
+.radial-svg {
+  transform: rotate(-90deg);
+  width: 100%;
+  height: 100%;
+}
+
+.radial-track {
+  fill: none;
+  stroke: hsl(var(--bg-tertiary));
+  stroke-width: 12;
+}
+
+.radial-indicator {
+  fill: none;
+  stroke: url(#radialGradient);
+  stroke-width: 12;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s ease-out;
+}
+
+.radial-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.radial-percentage {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: hsl(var(--text-primary));
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.radial-label {
+  font-size: 0.75rem;
+  color: hsl(var(--text-secondary));
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+/* Stage & Progress List Widget */
+.pipeline-progress-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.progress-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.progress-item-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.progress-item-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: hsl(var(--text-primary));
+  font-weight: 600;
+}
+
+.progress-item-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+}
+
+.progress-item-stats {
+  color: hsl(var(--text-secondary));
+}
+
+.progress-bar-bg {
+  width: 100%;
+  height: 8px;
+  background-color: hsl(var(--bg-tertiary));
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.8s ease-out;
+}
+
+/* Recent Leads List widget */
+.recent-leads-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.recent-lead-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: hsl(var(--bg-tertiary));
+  border: 1px solid hsl(var(--border-color));
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.recent-lead-row:hover {
+  border-color: hsl(var(--border-hover));
+  transform: translateX(2px);
+}
+
+.recent-lead-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar-initial {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, hsl(var(--bg-primary)), hsl(var(--border-color)));
+  color: hsl(var(--text-primary));
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid hsl(var(--border-color));
+}
+
+.recent-lead-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.recent-lead-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: hsl(var(--text-primary));
+}
+
+.recent-lead-company {
+  font-size: 0.75rem;
+  color: hsl(var(--text-secondary));
+}
+
+.recent-lead-val-status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.recent-lead-value {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: hsl(var(--text-primary));
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Lead Source Grid */
+.source-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.source-item {
+  padding: 16px;
+  border-radius: var(--radius-md);
+  background-color: hsl(var(--bg-tertiary));
+  border: 1px solid hsl(var(--border-color));
+  text-align: center;
+}
+
+.source-count {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: hsl(var(--accent-primary));
+  font-family: 'Outfit', sans-serif;
+}
+
+.source-name {
+  font-size: 0.75rem;
+  color: hsl(var(--text-secondary));
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-top: 4px;
+}

@@ -1,0 +1,243 @@
+/* Contact Form Simulator & Embed Snippet Styles */
+.simulator-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .simulator-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Embed Snippet Console */
+.snippet-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+}
+
+.snippet-instructions {
+  font-size: 0.9rem;
+  color: hsl(var(--text-secondary));
+  line-height: 1.5;
+}
+
+.code-box-container {
+  position: relative;
+  border-radius: var(--radius-md);
+  border: 1px solid hsl(var(--border-color));
+  background-color: hsl(var(--bg-primary));
+  overflow: hidden;
+}
+
+.code-box-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background-color: hsl(var(--bg-tertiary));
+  border-bottom: 1px solid hsl(var(--border-color));
+}
+
+.code-box-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: hsl(var(--text-secondary));
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.copy-btn {
+  background-color: hsl(var(--bg-secondary));
+  border: 1px solid hsl(var(--border-color));
+  color: hsl(var(--text-secondary));
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all var(--transition-fast);
+}
+
+.copy-btn:hover {
+  border-color: hsl(var(--border-hover));
+  color: hsl(var(--accent-primary));
+  background-color: hsl(var(--bg-tertiary));
+}
+
+.copy-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+.code-snippet-box {
+  padding: 20px;
+  margin: 0;
+  overflow-x: auto;
+  max-height: 320px;
+}
+
+.code-snippet-box code {
+  font-family: 'Fira Code', 'Courier New', Courier, monospace;
+  font-size: 0.8rem;
+  color: hsl(var(--status-contacted)); /* Elegant violet syntax hue */
+  line-height: 1.6;
+  white-space: pre;
+}
+
+/* Simulated Website Client Frame */
+.website-preview-frame {
+  border-radius: var(--radius-lg);
+  border: 1px solid hsl(var(--border-color));
+  background-color: #ffffff; /* Classic white website browser frame for contrast */
+  color: #1a1a1a;
+  overflow: hidden;
+  box-shadow: var(--glass-shadow);
+}
+
+[data-theme="light"] .website-preview-frame {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.frame-browser-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background-color: #e5e7eb;
+  border-bottom: 1px solid #d1d5db;
+}
+
+.browser-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.browser-dot.red { background-color: #ef4444; }
+.browser-dot.yellow { background-color: #f59e0b; }
+.browser-dot.green { background-color: #10b981; }
+
+.browser-address {
+  flex-grow: 1;
+  margin-left: 12px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  color: #6b7280;
+  border: 1px solid #e5e7eb;
+  font-family: monospace;
+}
+
+.frame-content {
+  padding: 32px 24px;
+  background: linear-gradient(180deg, #f9fafb 0%, #f3f4f6 100%);
+}
+
+.simulated-title {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #111827;
+  font-weight: 800;
+  margin-bottom: 8px;
+  font-family: 'Outfit', sans-serif;
+}
+
+.simulated-desc {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #4b5563;
+  max-width: 320px;
+  margin: 0 auto 24px;
+}
+
+/* Simulated website form styling (pure vanilla web elements) */
+.simulated-form {
+  max-width: 360px;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+}
+
+.simulated-form label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #374151;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.simulated-form input,
+.simulated-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #1f2937;
+  background-color: #f9fafb;
+  outline: none;
+  transition: all 0.2s;
+  margin-bottom: 12px;
+}
+
+.simulated-form input:focus,
+.simulated-form textarea:focus {
+  border-color: #2563eb;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.simulated-form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.simulated-form button:hover {
+  background-color: #1d4ed8;
+}
+
+/* Success notification overlay inside simulated browser frame */
+.submission-success-banner {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background-color: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 8px;
+  color: #065f46;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: scaleUp 0.3s ease-out;
+}
+
+.submission-success-banner svg {
+  width: 18px;
+  height: 18px;
+  color: #10b981;
+  flex-shrink: 0;
+}
