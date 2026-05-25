@@ -1,11 +1,15 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { sequelize, Lead } from './models/index.js';
 import apiRouter from './routes/api.js';
 import { seedDemoLeads } from './controllers/leadController.js';
 
 dotenv.config();
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -23,8 +27,18 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Serve static assets in production
+if (process.env.NODE_ENV === 'production') {
+  const distPath = path.resolve(__dirname, '../frontend/dist');
+  console.log(`Server Production Mode: Serving React build from ${distPath}`);
+  app.use(express.static(distPath));
+}
+
 // Root health check endpoint
-app.get('/', (req, res) => {
+app.get('/', (req, res, next) => {
+  if (process.env.NODE_ENV === 'production') {
+    return next(); // Pass through to index.html in production
+  }
   res.status(200).json({ 
     message: 'CRM API Server is running',
     version: '1.0.0',
@@ -33,8 +47,17 @@ app.get('/', (req, res) => {
   });
 });
 
+
 // Mount the API Router under /api
 app.use('/api', apiRouter);
+
+// Catch-all route to serve React HTML page in production
+if (process.env.NODE_ENV === 'production') {
+  app.get('*', (req, res) => {
+    const distPath = path.resolve(__dirname, '../frontend/dist');
+    res.sendFile(path.resolve(distPath, 'index.html'));
+  });
+}
 
 // Sync Database and Launch Server
 const startServer = async () => {
