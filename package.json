@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Simple CRM to manage client leads generated from website contact forms",
   "scripts": {
-    "install:backend": "npm --prefix backend install",
-    "install:frontend": "npm --prefix frontend install",
-    "install-all": "npm install && npm run install:backend && npm run install:frontend",
+    "install:backend": "npm --prefix backend install --include=dev",
+    "install:frontend": "npm --prefix frontend install --include=dev",
+    "install-all": "npm install --include=dev && npm run install:backend && npm run install:frontend",
     "build": "npm run install-all && npm --prefix frontend run build",
     "start": "node backend/server.js",
     "backend": "npm --prefix backend run dev",
@@ -14,5 +14,8 @@
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }
