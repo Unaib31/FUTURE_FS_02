@@ -60,16 +60,6 @@ export default function Login({ onLoginSuccess }) {
           </div>
         )}
 
-        {/* Informative credentials seeder helper box */}
-        <div className="auth-seed-helper">
-          <span className="auth-seed-title">🔑 Seeded Admin Account</span>
-          Use the system auto-seeded administrative login credentials to access the CRM dashboard:
-          <div style={{ marginTop: '8px', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-            <span>User: <strong className="auth-seed-credentials">admin</strong></span>
-            <span>Pass: <strong className="auth-seed-credentials">admin123</strong></span>
-          </div>
-        </div>
-
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div className="form-group" style={{ margin: '0' }}>
             <label>Username</label>
