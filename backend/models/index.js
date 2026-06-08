@@ -1,6 +1,7 @@
 import sequelize from '../config/db.js';
 import Lead from './lead.js';
 import Note from './note.js';
+import User from './user.js';
 
 // Define Associations
 // A Lead can have many notes. Deleting a lead deletes its notes (CASCADE).
@@ -20,5 +21,7 @@ Note.belongsTo(Lead, {
 export {
   sequelize,
   Lead,
-  Note
+  Note,
+  User
 };
+

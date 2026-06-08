@@ -5,6 +5,7 @@ import KanbanBoard from './components/KanbanBoard';
 import LeadTable from './components/LeadTable';
 import LeadFormSimulator from './components/LeadFormSimulator';
 import LeadDetailsDrawer from './components/LeadDetailsDrawer';
+import Login from './components/Login';
 
 // Import CSS Files
 import './styles/variables.css';
@@ -20,6 +21,24 @@ export default function App() {
   const [currentTab, setCurrentTab] = useState('dashboard');
   const [selectedLeadId, setSelectedLeadId] = useState(null);
   
+  // Auth state management
+  const [token, setToken] = useState(() => {
+    return localStorage.getItem('crm-token') || null;
+  });
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('crm-user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+
+  // Listen for global unauthenticated errors to redirect to login
+  useEffect(() => {
+    const handleAuthError = () => {
+      handleLogout();
+    };
+    window.addEventListener('crm-unauthorized', handleAuthError);
+    return () => window.removeEventListener('crm-unauthorized', handleAuthError);
+  }, []);
+
   // Theme management (Dark Mode default)
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('crm-theme') || 'dark';
@@ -35,19 +54,38 @@ export default function App() {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark');
   };
 
+  const handleLoginSuccess = (newToken, loggedUser) => {
+    setToken(newToken);
+    setUser(loggedUser);
+    localStorage.setItem('crm-token', newToken);
+    localStorage.setItem('crm-user', JSON.stringify(loggedUser));
+  };
+
+  const handleLogout = () => {
+    setToken(null);
+    setUser(null);
+    localStorage.removeItem('crm-token');
+    localStorage.removeItem('crm-user');
+  };
+
+  // If not authenticated, serve the Login panel
+  if (!token) {
+    return <Login onLoginSuccess={handleLoginSuccess} />;
+  }
+
   // Render the appropriate panel based on currentTab
   const renderContent = () => {
     switch (currentTab) {
       case 'dashboard':
-        return <DashboardOverview onOpenLeadDrawer={setSelectedLeadId} />;
+        return <DashboardOverview onOpenLeadDrawer={setSelectedLeadId} token={token} />;
       case 'kanban':
-        return <KanbanBoard onOpenLeadDrawer={setSelectedLeadId} />;
+        return <KanbanBoard onOpenLeadDrawer={setSelectedLeadId} token={token} />;
       case 'leads':
-        return <LeadTable onOpenLeadDrawer={setSelectedLeadId} />;
+        return <LeadTable onOpenLeadDrawer={setSelectedLeadId} token={token} />;
       case 'simulator':
         return <LeadFormSimulator />;
       default:
-        return <DashboardOverview onOpenLeadDrawer={setSelectedLeadId} />;
+        return <DashboardOverview onOpenLeadDrawer={setSelectedLeadId} token={token} />;
     }
   };
 
@@ -57,7 +95,7 @@ export default function App() {
       case 'dashboard':
         return {
           title: 'CRM Metrics Center',
-          subtitle: 'Real-time sales conversion ratios and active pipeline valuations'
+          subtitle: `Active pipeline summary for ${user ? user.username : 'Administrator'}`
         };
       case 'kanban':
         return {
@@ -92,6 +130,7 @@ export default function App() {
         setCurrentTab={setCurrentTab} 
         theme={theme}
         toggleTheme={toggleTheme}
+        onLogout={handleLogout}
       />
 
       {/* Main workspace */}
@@ -113,7 +152,7 @@ export default function App() {
               border: '1px solid hsl(var(--border-color))',
               background: 'hsl(var(--bg-tertiary))'
             }}>
-              SYSTEM ONLINE
+              SECURE SESSION
             </span>
           </div>
         </header>
@@ -126,9 +165,11 @@ export default function App() {
           <LeadDetailsDrawer 
             leadId={selectedLeadId} 
             onClose={() => setSelectedLeadId(null)}
+            token={token}
           />
         )}
       </main>
     </div>
   );
 }
+

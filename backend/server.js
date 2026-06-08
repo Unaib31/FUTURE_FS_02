@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import { sequelize, Lead } from './models/index.js';
 import apiRouter from './routes/api.js';
 import { seedDemoLeads } from './controllers/leadController.js';
+import { seedAdminUser } from './controllers/authController.js';
 
 dotenv.config();
 
@@ -67,6 +68,9 @@ const startServer = async () => {
     await sequelize.sync();
     console.log('Database Sync: Models synced successfully.');
 
+    // Auto-seed the default administrator account
+    await seedAdminUser();
+
     // Auto-seed the database if it is empty to guarantee a visually complete dashboard immediately
     const leadCount = await Lead.count();
     if (leadCount === 0) {
@@ -96,3 +100,4 @@ const startServer = async () => {
 };
 
 startServer();
+

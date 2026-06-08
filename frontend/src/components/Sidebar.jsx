@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Sidebar({ currentTab, setCurrentTab, theme, toggleTheme }) {
+export default function Sidebar({ currentTab, setCurrentTab, theme, toggleTheme, onLogout }) {
   const navItems = [
     {
       id: 'dashboard',
@@ -69,6 +69,26 @@ export default function Sidebar({ currentTab, setCurrentTab, theme, toggleTheme 
             title="Toggle theme appearance"
           />
         </div>
+
+        {onLogout && (
+          <button 
+            onClick={onLogout}
+            className="sidebar-nav-item"
+            style={{ 
+              marginTop: '8px', 
+              color: 'hsl(var(--status-lost))', 
+              backgroundColor: 'transparent',
+              border: 'none',
+              width: '100%',
+              textAlign: 'left'
+            }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9" />
+            </svg>
+            <span>Sign Out</span>
+          </button>
+        )}
       </div>
     </aside>
   );

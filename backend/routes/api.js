@@ -10,28 +10,35 @@ import {
   seedDemoLeads
 } from '../controllers/leadController.js';
 import { getDashboardStats } from '../controllers/dashboardController.js';
+import { login, getMe } from '../controllers/authController.js';
+import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// Lead CRUD Endpoints
-router.get('/leads', getLeads);
-router.get('/leads/:id', getLeadById);
-router.post('/leads', createLead);
-router.put('/leads/:id', updateLead);
-router.delete('/leads/:id', deleteLead);
+// Authentication Endpoints (Unprotected)
+router.post('/auth/login', login);
+router.get('/auth/me', protect, getMe);
 
-// Lead Notes Endpoints
-router.post('/leads/:id/notes', addNote);
-router.delete('/notes/:id', deleteNote);
+// Lead CRUD Endpoints (Protected)
+router.get('/leads', protect, getLeads);
+router.get('/leads/:id', protect, getLeadById);
+router.post('/leads', protect, createLead);
+router.put('/leads/:id', protect, updateLead);
+router.delete('/leads/:id', protect, deleteLead);
 
-// Dashboard Analytics Endpoint
-router.get('/dashboard/stats', getDashboardStats);
+// Lead Notes Endpoints (Protected)
+router.post('/leads/:id/notes', protect, addNote);
+router.delete('/notes/:id', protect, deleteNote);
 
-// Database Seeder Endpoint
-router.post('/leads/seed', seedDemoLeads);
+// Dashboard Analytics Endpoint (Protected)
+router.get('/dashboard/stats', protect, getDashboardStats);
 
-// Webhook Contact Form Integration Endpoint (Alias for Lead Creation)
+// Database Seeder Endpoint (Protected)
+router.post('/leads/seed', protect, seedDemoLeads);
+
+// Webhook Contact Form Integration Endpoint (Alias for Lead Creation - Unprotected)
 // This endpoint is perfect for public iframe embeds or cross-origin submissions
 router.post('/leads/webhook', createLead);
 
 export default router;
+

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export default function LeadTable({ onOpenLeadDrawer }) {
+export default function LeadTable({ onOpenLeadDrawer, token }) {
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -36,8 +36,17 @@ export default function LeadTable({ onOpenLeadDrawer }) {
         order
       }).toString();
 
-      const res = await fetch(`/api/leads?${query}`);
-      if (!res.ok) throw new Error('Failed to load leads list');
+      const res = await fetch(`/api/leads?${query}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (!res.ok) {
+        if (res.status === 401) {
+          throw new Error('Session expired. Please log in again.');
+        }
+        throw new Error('Failed to load leads list');
+      }
       const data = await res.json();
       setLeads(data);
       setError(null);
@@ -50,12 +59,14 @@ export default function LeadTable({ onOpenLeadDrawer }) {
   };
 
   useEffect(() => {
-    fetchLeads();
+    if (token) {
+      fetchLeads();
+    }
     
     // Add global listener to refresh table if lead updates occur elsewhere
     window.addEventListener('crm-lead-updated', fetchLeads);
     return () => window.removeEventListener('crm-lead-updated', fetchLeads);
-  }, [search, status, source, sortBy, order]);
+  }, [search, status, source, sortBy, order, token]);
 
   // Handle lead deletion
   const handleDelete = async (e, id) => {
@@ -63,7 +74,12 @@ export default function LeadTable({ onOpenLeadDrawer }) {
     if (!window.confirm('Are you absolutely sure you want to delete this lead? All note logs will be permanently deleted.')) return;
 
     try {
-      const res = await fetch(`/api/leads/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/leads/${id}`, { 
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       if (!res.ok) throw new Error('Failed to delete lead');
       
       // Update local state immediately
@@ -87,7 +103,10 @@ export default function LeadTable({ onOpenLeadDrawer }) {
     try {
       const res = await fetch('/api/leads', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({
           ...newLeadForm,
           value: parseFloat(newLeadForm.value) || 0.00

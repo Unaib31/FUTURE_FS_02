@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export default function DashboardOverview({ onOpenLeadDrawer }) {
+export default function DashboardOverview({ onOpenLeadDrawer, token }) {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -8,8 +8,17 @@ export default function DashboardOverview({ onOpenLeadDrawer }) {
   const fetchStats = async () => {
     try {
       setLoading(true);
-      const res = await fetch('/api/dashboard/stats');
-      if (!res.ok) throw new Error('Failed to load dashboard metrics');
+      const res = await fetch('/api/dashboard/stats', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (!res.ok) {
+        if (res.status === 401) {
+          throw new Error('Session expired. Please log in again.');
+        }
+        throw new Error('Failed to load dashboard metrics');
+      }
       const data = await res.json();
       setStats(data);
       setError(null);
@@ -22,8 +31,10 @@ export default function DashboardOverview({ onOpenLeadDrawer }) {
   };
 
   useEffect(() => {
-    fetchStats();
-  }, []);
+    if (token) {
+      fetchStats();
+    }
+  }, [token]);
 
   if (loading) {
     return (

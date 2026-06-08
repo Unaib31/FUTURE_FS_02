@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export default function LeadDetailsDrawer({ leadId, onClose }) {
+export default function LeadDetailsDrawer({ leadId, onClose, token }) {
   const [lead, setLead] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,8 +17,17 @@ export default function LeadDetailsDrawer({ leadId, onClose }) {
     if (!leadId) return;
     try {
       setLoading(true);
-      const res = await fetch(`/api/leads/${leadId}`);
-      if (!res.ok) throw new Error('Lead record could not be fetched');
+      const res = await fetch(`/api/leads/${leadId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (!res.ok) {
+        if (res.status === 401) {
+          throw new Error('Session expired. Please log in again.');
+        }
+        throw new Error('Lead record could not be fetched');
+      }
       const data = await res.json();
       setLead(data);
       setEditableValue(data.value);
@@ -32,15 +41,20 @@ export default function LeadDetailsDrawer({ leadId, onClose }) {
   };
 
   useEffect(() => {
-    fetchLeadDetails();
-  }, [leadId]);
+    if (leadId && token) {
+      fetchLeadDetails();
+    }
+  }, [leadId, token]);
 
   // Handle stage transition
   const handleStatusChange = async (newStatus) => {
     try {
       const res = await fetch(`/api/leads/${leadId}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({ status: newStatus })
       });
 
@@ -67,7 +81,10 @@ export default function LeadDetailsDrawer({ leadId, onClose }) {
     try {
       const res = await fetch(`/api/leads/${leadId}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({ value: parsedVal })
       });
 
@@ -93,7 +110,10 @@ export default function LeadDetailsDrawer({ leadId, onClose }) {
     try {
       const res = await fetch(`/api/leads/${leadId}/notes`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({
           content: newNoteContent,
           author: noteAuthor
@@ -116,7 +136,12 @@ export default function LeadDetailsDrawer({ leadId, onClose }) {
     if (!window.confirm('Delete this timeline note permanently?')) return;
 
     try {
-      const res = await fetch(`/api/notes/${noteId}`, { method: 'DELETE' });
+      const res = await fetch(`/api/notes/${noteId}`, { 
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       if (!res.ok) throw new Error('Failed to delete note');
       
       // Update local state instantly

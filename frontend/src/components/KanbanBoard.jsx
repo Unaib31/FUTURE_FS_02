@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export default function KanbanBoard({ onOpenLeadDrawer }) {
+export default function KanbanBoard({ onOpenLeadDrawer, token }) {
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,8 +11,17 @@ export default function KanbanBoard({ onOpenLeadDrawer }) {
   const fetchLeads = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/leads?sortBy=updatedAt&order=desc`);
-      if (!res.ok) throw new Error('Failed to fetch leads');
+      const res = await fetch(`/api/leads?sortBy=updatedAt&order=desc`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (!res.ok) {
+        if (res.status === 401) {
+          throw new Error('Session expired. Please log in again.');
+        }
+        throw new Error('Failed to fetch leads');
+      }
       const data = await res.json();
       setLeads(data);
       setError(null);
@@ -25,12 +34,14 @@ export default function KanbanBoard({ onOpenLeadDrawer }) {
   };
 
   useEffect(() => {
-    fetchLeads();
+    if (token) {
+      fetchLeads();
+    }
     
     // Add global listener to refresh board if lead updates occur elsewhere (e.g., details drawer)
     window.addEventListener('crm-lead-updated', fetchLeads);
     return () => window.removeEventListener('crm-lead-updated', fetchLeads);
-  }, []);
+  }, [token]);
 
   // Quick move lead stage (left or right)
   const moveLead = async (e, leadId, currentStatus, direction) => {
@@ -45,7 +56,10 @@ export default function KanbanBoard({ onOpenLeadDrawer }) {
     try {
       const res = await fetch(`/api/leads/${leadId}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({ status: targetStage })
       });
 
