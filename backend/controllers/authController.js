@@ -86,3 +86,58 @@ export const seedAdminUser = async () => {
     console.error('Failed to seed default admin user:', error);
   }
 };
+
+// Register a new user account (Admin-only creation)
+export const register = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+      return res.status(400).json({ message: 'Username and password are required' });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({ message: 'Password must be at least 6 characters long' });
+    }
+
+    // Check if username already exists
+    const existingUser = await User.findOne({ where: { username } });
+    if (existingUser) {
+      return res.status(409).json({ message: 'Username is already taken' });
+    }
+
+    // Create the user
+    const newUser = await User.create({
+      username,
+      password
+    });
+
+    return res.status(201).json({
+      message: 'User account created successfully',
+      user: {
+        id: newUser.id,
+        username: newUser.username,
+        createdAt: newUser.createdAt
+      }
+    });
+  } catch (error) {
+    console.error('User registration error:', error);
+    return res.status(500).json({ message: 'Error registering user', error: error.message });
+  }
+};
+
+// Fetch list of all registered team users
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.findAll({
+      attributes: ['id', 'username', 'createdAt'],
+      order: [['createdAt', 'ASC']]
+    });
+
+    return res.status(200).json(users);
+  } catch (error) {
+    console.error('Get all users error:', error);
+    return res.status(500).json({ message: 'Error fetching team users list', error: error.message });
+  }
+};
+

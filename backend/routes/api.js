@@ -10,14 +10,16 @@ import {
   seedDemoLeads
 } from '../controllers/leadController.js';
 import { getDashboardStats } from '../controllers/dashboardController.js';
-import { login, getMe } from '../controllers/authController.js';
+import { login, getMe, register, getAllUsers } from '../controllers/authController.js';
 import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// Authentication Endpoints (Unprotected)
+// Authentication Endpoints (Unprotected / Partially Protected)
 router.post('/auth/login', login);
 router.get('/auth/me', protect, getMe);
+router.post('/auth/register', protect, register); // Admin-only: must be logged in to create new users
+router.get('/auth/users', protect, getAllUsers);   // Admin-only: fetch active user accounts
 
 // Lead CRUD Endpoints (Protected)
 router.get('/leads', protect, getLeads);

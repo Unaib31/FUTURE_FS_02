@@ -6,6 +6,7 @@ import LeadTable from './components/LeadTable';
 import LeadFormSimulator from './components/LeadFormSimulator';
 import LeadDetailsDrawer from './components/LeadDetailsDrawer';
 import Login from './components/Login';
+import SettingsView from './components/SettingsView';
 
 // Import CSS Files
 import './styles/variables.css';
@@ -16,6 +17,7 @@ import './styles/kanban.css';
 import './styles/lead-table.css';
 import './styles/lead-drawer.css';
 import './styles/simulator.css';
+import './styles/settings.css';
 
 export default function App() {
   const [currentTab, setCurrentTab] = useState('dashboard');
@@ -84,6 +86,8 @@ export default function App() {
         return <LeadTable onOpenLeadDrawer={setSelectedLeadId} token={token} />;
       case 'simulator':
         return <LeadFormSimulator />;
+      case 'settings':
+        return <SettingsView token={token} />;
       default:
         return <DashboardOverview onOpenLeadDrawer={setSelectedLeadId} token={token} />;
     }
@@ -111,6 +115,11 @@ export default function App() {
         return {
           title: 'Contact Form Ingestion Console',
           subtitle: 'Simulate submissions and copy embed form snippets'
+        };
+      case 'settings':
+        return {
+          title: 'Settings & Team Manager',
+          subtitle: 'Create and configure administrative login accounts'
         };
       default:
         return {
